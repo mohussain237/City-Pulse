@@ -1,5 +1,5 @@
 # live depoyed app Link:
-https://app-city-pulse.netlify.app/home
+https://app-city-pulse.netlify.app
 
 ## Features
 
