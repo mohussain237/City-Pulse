@@ -1,3 +1,6 @@
+# live depoyed app Link:
+https://app-city-pulse.netlify.app/home
+
 ## Features
 
 View list of events
