@@ -42,6 +42,7 @@ Event details page shows a static map preview using Google Maps iframe.
 
 ## Screen Shots for Mobile and Desktop View,
 <img width="1514" height="1160" alt="image" src="https://github.com/user-attachments/assets/169949be-4b29-49f1-ac90-3ccd29e169e0" />
+<img width="1547" height="1177" alt="image" src="https://github.com/user-attachments/assets/de7d53ab-2ce3-4d48-a335-46e44f8e1eb9" />
 
 <img width="1515" height="1295" alt="image" src="https://github.com/user-attachments/assets/fef91020-7c9d-46e3-959f-7371d83ba2d9" />
 <img width="1514" height="1160" alt="image" src="https://github.com/user-attachments/assets/ae7b087f-4010-475a-a390-61973ce3d821" />
