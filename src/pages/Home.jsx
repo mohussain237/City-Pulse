@@ -20,7 +20,7 @@ export default function Home() {
 
     const handleLogout = () => {
         setUser(null)
-        console.log(users)
+        // console.log(users)
         navigate("/login");
 
     }
@@ -31,7 +31,7 @@ export default function Home() {
 
     console.log(user)
     return (
-        <div style={{ margin: "5px 20px 5px 20px", padding: 16, direction: language === "ar" ? "rtl" : "ltr" }}>
+        <div style={{ alignItems:"center", maxWidth:"1000px", padding: 16, direction: language === "ar" ? "rtl" : "ltr" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h2>Home</h2>
                 <div>
@@ -47,7 +47,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="search-bar" style={{ margin: "12px 0", display: "flex", gap: 8 }}>
+            <div className="search-bar" style={{ margin: "12px 0",  justifyContent: "center" ,display: "flex", gap: 8 }}>
                 <input
                     placeholder={language === "en" ? "Keyword" : "كلمة البحث"}
                     value={keyword}
@@ -61,7 +61,7 @@ export default function Home() {
                 <button style={{ padding: "10px", display: "inline-block" }} onClick={handleSearch}>Search</button>
             </div>
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" , justifyContent:"center"}}>
                 {results.length === 0 && <p>No events found.</p>}
                 {results.map((ev) => (
                     <EventCard

@@ -1,65 +1,130 @@
-
-import React, { createContext, useContext } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { events as allEvents } from "../data/events";
-
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  // language: "en" | "ar"
-  const [language, setLanguage] = useLocalStorage("cp_language", "en");
+  // 🔥 LANGUAGE (stored globally for all users)
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("cp_language") || "en"
+  );
 
-  // auth: user object or null
-  const [user, setUser] = useLocalStorage("cp_user", null);
+  useEffect(() => {
+    localStorage.setItem("cp_language", language);
+  }, [language]);
 
-  // store registered users (for mock signup)
-  const [users, setUsers] = useLocalStorage("cp_users", []);
+  // 🔥 AUTHENTICATION
+  const [user, setUser] = useState(
+    () => JSON.parse(localStorage.getItem("cp_user")) || null
+  );
 
-  // favorites: array of event objects
-  const [favorites, setFavorites] = useLocalStorage("cp_favorites", []);
+  const [users, setUsers] = useState(
+    () => JSON.parse(localStorage.getItem("cp_users")) || []
+  );
 
-  // Auth actions (mock)
+  useEffect(() => {
+    localStorage.setItem("cp_user", JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem("cp_users", JSON.stringify(users));
+  }, [users]);
+
+  // 🔥 FAVORITES (Loaded dynamically based on user)
+  const [favorites, setFavorites] = useState([]);
+
+  // Load correct favorite list when user logs in/out
+  useEffect(() => {
+    const key = user ? `cp_favorites_${user.id}` : "cp_favorites_guest";
+
+    const saved = JSON.parse(localStorage.getItem(key)) || [];
+
+    console.log("====================================");
+    console.log("🔄 FAVORITES RELOADED");
+    console.log("👤 Current User:", user ? user.email : "Guest");
+    console.log("🗄 Storage Key Used:", key);
+    console.log("⭐ Loaded Favorites:", saved);
+    console.log("====================================");
+
+    setFavorites(saved);
+  }, [user]);
+
+  // ⭐ SIGNUP
   const signup = ({ name, email, password }) => {
-    if (!email || !password) return { success: false, message: "Email & password required" };
+    if (!email || !password)
+      return { success: false, message: "Email & password required" };
 
-    const exists = users.find(u => u.email === email);
+    const exists = users.find((u) => u.email === email);
     if (exists) return { success: false, message: "User already exists" };
 
-    const newUser = { id: Date.now().toString(), name, email, password };
-    setUsers([...users, newUser]);
+    const newUser = {
+      id: Date.now().toString(),
+      name,
+      email,
+      password,
+    };
+
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+
+    // Auto-login after signup
     setUser({ id: newUser.id, name: newUser.name, email: newUser.email });
+
+    console.log("🎉 New User Created:", newUser);
+
     return { success: true };
   };
 
+  // ⭐ LOGIN
   const login = ({ email, password }) => {
-    if (!email || !password) return { success: false, message: "Email & password required" };
+    const found = users.find(
+      (u) => u.email === email && u.password === password
+    );
 
-    const found = users.find(u => u.email === email && u.password === password);
-    if (!found) return { success: false, message: "Invalid credentials" };
+    if (!found) {
+      console.log("❌ LOGIN FAILED for:", email);
+      return { success: false, message: "Invalid credentials" };
+    }
 
     setUser({ id: found.id, name: found.name, email: found.email });
+
+    console.log("✅ LOGIN SUCCESS:", found.email);
+
     return { success: true };
   };
 
-  const logout = () => setUser(null);
+  // ⭐ LOGOUT
+  const logout = () => {
+    console.log("🚪 USER LOGGED OUT:", user?.email);
+    setUser(null);
+  };
 
-  // Favorites actions
+  // ⭐ FAVORITE TOGGLE (user-based or guest-based)
   const toggleFavorite = (event) => {
-    const exists = favorites.find(f => f.id === event.id);
-    if (exists) {
-      setFavorites(favorites.filter(f => f.id !== event.id));
-    } else {
-      setFavorites([event, ...favorites]);
-    }
+    const key = user ? `cp_favorites_${user.id}` : "cp_favorites_guest";
+
+    const exists = favorites.some((f) => f.id === event.id);
+
+    const updated = exists
+      ? favorites.filter((f) => f.id !== event.id)
+      : [event, ...favorites];
+
+    console.log("====================================");
+    console.log("⭐ FAVORITE TOGGLED");
+    console.log("👤 User:", user ? user.email : "Guest");
+    console.log("🗄 Storage Key:", key);
+    console.log("📌 Event:", event.title);
+    console.log("🆕 Updated List:", updated);
+    console.log("====================================");
+
+    setFavorites(updated);
+    localStorage.setItem(key, JSON.stringify(updated));
   };
 
-  const isFavorite = (eventId) => favorites.some(f => f.id === eventId);
+  const isFavorite = (eventId) => favorites.some((f) => f.id === eventId);
 
-  // Simple helper to get event by id (from local data)
-  const getEventById = (id) => {
-    return allEvents.find(e => e.id === id) || null;
-  };
+  // ⭐ Get single event details
+  const getEventById = (id) => allEvents.find((e) => e.id === id) || null;
 
   return (
     <AppContext.Provider
@@ -74,8 +139,8 @@ export const AppProvider = ({ children }) => {
         toggleFavorite,
         isFavorite,
         getEventById,
+        users,
         setUser,
-        users
       }}
     >
       {children}

@@ -13,7 +13,10 @@ function EventCard({ event, isFavorite, toggleFavorite }) {
 
         <button
           className="fav-btn"
-          onClick={() => toggleFavorite(event)}
+          onClick={() => {
+            toggleFavorite(event)
+           console.log("Toggledclicked", event)
+          }}
         >
           {isFavorite(event.id) ? "★ Remove Favorite" : "☆ Add Favorite"}
         </button>
