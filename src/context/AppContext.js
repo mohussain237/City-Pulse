@@ -103,10 +103,10 @@ export const AppProvider = ({ children }) => {
   const toggleFavorite = (event) => {
     const key = user ? `cp_favorites_${user.id}` : "cp_favorites_guest";
 
-    const exists = favorites.some((f) => f.id === event.id);
+    const exists = favorites.some((f) => f.id === event.id);  // return boolen
 
     const updated = exists
-      ? favorites.filter((f) => f.id !== event.id)
+      ? favorites.filter((f) => f.id !== event.id)           // remove event or Add event in favorites
       : [event, ...favorites];
 
     console.log("====================================");
@@ -121,9 +121,8 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem(key, JSON.stringify(updated));
   };
 
-  const isFavorite = (eventId) => favorites.some((f) => f.id === eventId);
-
-  // ⭐ Get single event details
+  const isFavorite = (eventId) => favorites.some((f) => f.id === eventId);  // return boolean
+ 
   const getEventById = (id) => allEvents.find((e) => e.id === id) || null;
 
   return (

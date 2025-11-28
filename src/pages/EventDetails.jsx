@@ -22,7 +22,7 @@ export default function EventDetails() {
       <Link to="/home">← {language === "en" ? "Back" : "عودة"}</Link>
 
       <div style={{ marginTop: 12, display: "flex", gap: 16 }}>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1 , minWidth:"120px", maxWidth:"650px"}}>
           <img src={event.image} alt={event.title} style={{ width: "100%", borderRadius: 8 }} />
           <h2 style={{ marginTop: 8 }}>{event.title}</h2>
           <p>{event.venue} • {event.city}</p>
@@ -30,7 +30,7 @@ export default function EventDetails() {
           <p>{event.description}</p>
 
           <div style={{ marginTop: 8 }}>
-            <button onClick={() => toggleFavorite(event)}>
+            <button className="account-btn " onClick={() => toggleFavorite(event)}>
               {isFavorite(event.id) ? (language === "en" ? "Remove Favorite" : "إزالة من المفضلة") : (language === "en" ? "Add Favorite" : "أضف للمفضلة")}
             </button>
           </div>
@@ -42,7 +42,7 @@ export default function EventDetails() {
             <iframe
               title="map"
               src={mapSrc}
-              style={{ width: "100%", height: 320, border: 0 }}
+              style={{ width: "100%", height: 300, border: 0 }}
             />
           </div>
         </div>

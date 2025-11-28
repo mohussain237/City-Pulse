@@ -13,7 +13,7 @@ export default function Splash() {
   return (
     <div style={{ padding: 40, textAlign: "center" }}>
       <h1 style={{ margin: 0 }}>City Pulse</h1>
-      <p style={{ color: "#666" }}>Local Events Explorer</p>
+      <p style={{ color: "#666", marginTop:10 }}>Local Events Explorer</p>
     </div>
   );
 }

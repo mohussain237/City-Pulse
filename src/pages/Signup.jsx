@@ -21,18 +21,37 @@ export default function Signup() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2>Sign Up</h2>
-      <div style={{ maxWidth: 420 }}>
-        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
-        <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-        <div style={{ marginTop: 8 }}>
-          <button onClick={handleSignup}>Create account</button>
-          <Link to="/login" style={{ marginLeft: 8 }}>Login</Link>
+    <div style={{
+      height: "100vh",
+      width: "100vw",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "#f5f5f5",
+    }}>
+
+      <div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <h2>SignUp</h2>
+
+          <button className="common-btn" >
+            <Link to="/">Guest</Link>
+          </button>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <div style={{ maxWidth: 375, marginTop: "10px" }}>
+          <input  className="text-input" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+          <input  className="text-input" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+          <input  className="text-input" placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          <div style={{ display: "flex" }}>
+            <button onClick={handleSignup} className="account-btn ">Create account</button>
+            <button className="common-btn"><Link to="/login">Login</Link> </button>
+          </div>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+        </div>
       </div>
+
+
     </div>
   );
 }
