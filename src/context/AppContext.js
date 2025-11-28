@@ -30,7 +30,7 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem("cp_users", JSON.stringify(users));
   }, [users]);
 
-  // 🔥 FAVORITES (Loaded dynamically based on user)
+  //  FAVORITES (Loaded dynamically based on user)
   const [favorites, setFavorites] = useState([]);
 
   // Load correct favorite list when user logs in/out
@@ -39,17 +39,10 @@ export const AppProvider = ({ children }) => {
 
     const saved = JSON.parse(localStorage.getItem(key)) || [];
 
-    console.log("====================================");
-    console.log("🔄 FAVORITES RELOADED");
-    console.log("👤 Current User:", user ? user.email : "Guest");
-    console.log("🗄 Storage Key Used:", key);
-    console.log("⭐ Loaded Favorites:", saved);
-    console.log("====================================");
-
     setFavorites(saved);
   }, [user]);
 
-  // ⭐ SIGNUP
+  //  SIGNUP
   const signup = ({ name, email, password }) => {
     if (!email || !password)
       return { success: false, message: "Email & password required" };
@@ -108,14 +101,6 @@ export const AppProvider = ({ children }) => {
     const updated = exists
       ? favorites.filter((f) => f.id !== event.id)           // remove event or Add event in favorites
       : [event, ...favorites];
-
-    console.log("====================================");
-    console.log("⭐ FAVORITE TOGGLED");
-    console.log("👤 User:", user ? user.email : "Guest");
-    console.log("🗄 Storage Key:", key);
-    console.log("📌 Event:", event.title);
-    console.log("🆕 Updated List:", updated);
-    console.log("====================================");
 
     setFavorites(updated);
     localStorage.setItem(key, JSON.stringify(updated));
